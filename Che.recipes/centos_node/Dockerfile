@@ -28,16 +28,12 @@ RUN npm --no-color --user=root install -g swagger swagger-ui \
 
 RUN npm --no-color --user=root install -g asyncflow common-node synchronize streamline >/dev/null
 
-# RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /root/.bash_profile
-# RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /root/.bash_profile
-RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /root/.bashrc
-RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /root/.bashrc
+RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /root/.bash_profile
+RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /root/.bash_profile
 
 USER user
-# RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /home/user/.bash_profile
-# RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /home/user/.bash_profile
-RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /home/user/.bashrc
-RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /home/user/.bashrc
+RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /home/user/.bash_profile
+RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /home/user/.bash_profile
 
 LABEL che:server:3000:ref=nodejs-3000 che:server:3000:protocol=http \
       che:server:5000:ref=nodejs-5000 che:server:5000:protocol=http \
