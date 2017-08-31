@@ -28,12 +28,16 @@ RUN npm --no-color --user=root install -g swagger swagger-ui \
 
 RUN npm --no-color --user=root install -g asyncflow common-node synchronize streamline >/dev/null
 
-RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /root/.bash_profile
-RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /root/.bash_profile
+# RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /root/.bash_profile
+# RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /root/.bash_profile
+RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /root/.bashrc
+RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /root/.bashrc
 
 USER user
-RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /home/user/.bash_profile
-RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /home/user/.bash_profile
+# RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /home/user/.bash_profile
+# RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /home/user/.bash_profile
+RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /home/user/.bashrc
+RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /home/user/.bashrc
 
 WORKDIR /projects
 CMD tail -f /dev/null
