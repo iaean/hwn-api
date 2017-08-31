@@ -1,0 +1,94 @@
+# Defines public IP for Che (ip should be IP of docker host)
+# che.server.ip = "localhost"
+
+# Defines port on which your private Che server will listen.
+# che.server.port = 8080
+
+# Defines name of the workspace
+workspace.name = "hwn-api"
+
+# Defines memory allocated to the workspace's runtime
+workspace.ram = 2048
+
+# A project has type, name, and mapped to a source repository.
+# This project is mapped to the directory where Chefile is saved.
+workspace.projects[0].type="blank"
+
+# You can have multiple projects sourced from git or subversion repos
+# workspace.projects[1].name = "hwn-ui"
+# workspace.projects[1].source.type = "git"
+# workspace.projects[1].source.location = "https://github.com/iaean/hwn-ui"
+# workspace.projects[1].type = "..."
+
+# Define the Docker image to use to power the workspace's runtime
+# This must conform to recipe requirements
+# workspace.runtime.docker.image=
+
+# You can - instead - define the runtime using a Dockerfile in a git repo
+# workspace.runtime.docker.location=
+
+# Or you could define the runtime using inline Dockerfile content
+# workspace.runtime.docker.dockerfile=`
+# ...
+# `
+
+# Or, you can define a multi-contianer runtime using compose
+workspace.runtime.docker.composefile=`
+version: "2"
+services:
+  memcached:
+    image: memcached:alpine
+    mem_limit: 1073741824
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    mem_limit: 1073741824
+  dev-machine:
+    build:
+      context: https://github.com/iaean/hwn-api.git#master:Che.recipes/centos_node
+    mem_limit: 2147483648
+    depends_on:
+      - "elasticsearch"
+      - "memcached"
+    links:
+      - "memcached"
+      - "memcached:memcache"
+      - "memcached:cache"
+      - "elasticsearch"
+      - "elasticsearch:elastic"
+`
+
+#  db:
+#    image: centos/mysql-57-centos7
+#    environment:
+#      MYSQL_ROOT_PASSWORD: password
+#      MYSQL_DATABASE: hwn
+#      MYSQL_USER: hwn
+#      MYSQL_PASSWORD: password
+#    mem_limit: 1073741824
+
+###    image: eclipse/centos_jdk8
+
+workspace.postload.actions[0].script=`echo stats | nc cache 11211`
+workspace.postload.actions[1].script=`wget -qO- --http-user elastic --http-password changeme http://elastic:9200/_cat/health`
+
+# Commands are processes that users execute in the IDE.
+# Commands will appear in the drop down on the tool bar.
+# workspace.commands[0].name = "my-first-command"
+# workspace.commands[0].type = "mvn"
+# workspace.commands[0].commandLine = "mvn clean install -f ${current.project.path}"
+# workspace.commands[0].attributes.previewUrl = "http://${server.port.80}/${current.project.relpath}"
+
+# A command that will be executed after the workspace is loaded.
+# Reference the name of a command defined above.
+# workspace.postload.actions[0].name="my-first-command"
+
+# Or, by defining inline bash script within the post action.
+# workspace.postload.actions[1].script=`echo 'this is a post-loading command' \
+#                                            && while true; do \
+#                                            echo $(date); sleep 1; \
+#                                            done`
