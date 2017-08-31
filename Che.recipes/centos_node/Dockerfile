@@ -39,5 +39,15 @@ USER user
 RUN echo 'export PATH=/opt/nodejs/bin:$PATH' >> /home/user/.bashrc
 RUN echo 'export NODE_PATH=/opt/nodejs/lib/node_modules' >> /home/user/.bashrc
 
+LABEL che:server:3000:ref=nodejs-3000 che:server:3000:protocol=http \
+      che:server:5000:ref=nodejs-5000 che:server:5000:protocol=http \
+      che:server:9000:ref=nodejs-9000 che:server:9000:protocol=http \
+      che:server:9200:ref=elastic-9200 che:server:9200:protocol=http \
+      che:server:9300:ref=elastic-9300 che:server:9300:protocol=http \
+      che:server:10010:ref=swagger-10010 che:server:10010:protocol=http \
+      che:server:11211:ref=memcache-11211 che:server:11211:protocol=tcp
+
+EXPOSE 3000 5000 9000 9200 9300 10010 11211
+
 WORKDIR /projects
 CMD tail -f /dev/null
