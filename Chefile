@@ -78,10 +78,29 @@ workspace.postload.actions[1].script=`wget -qO- --http-user elastic --http-passw
 
 # Commands are processes that users execute in the IDE.
 # Commands will appear in the drop down on the tool bar.
-# workspace.commands[0].name = "my-first-command"
-# workspace.commands[0].type = "mvn"
-# workspace.commands[0].commandLine = "mvn clean install -f ${current.project.path}"
-# workspace.commands[0].attributes.previewUrl = "http://${server.port.80}/${current.project.relpath}"
+
+workspace.commands[0].name = "swagger start"
+workspace.commands[0].type = "custom"
+workspace.commands[0].commandLine = "cd /projects/hwn-api && swagger project start"
+workspace.commands[0].attributes.previewUrl = "http://${server.port.10010}/hello?name=Scott"
+workspace.commands[0].attributes.goal = "Run"
+
+workspace.commands[1].name = "swagger mock"
+workspace.commands[1].type = "custom"
+workspace.commands[1].commandLine = "cd /projects/hwn-api && swagger project start -m"
+workspace.commands[1].attributes.previewUrl = "http://${server.port.10010}/hello?name=Scott"
+workspace.commands[1].attributes.goal = "Run"
+
+workspace.commands[2].name = "swagger test"
+workspace.commands[2].type = "custom"
+workspace.commands[2].commandLine = "cd /projects/hwn-api && swagger project verify && swagger project test"
+workspace.commands[2].attributes.goal = "Test"
+
+workspace.commands[3].name = "swagger edit"
+workspace.commands[3].type = "custom"
+workspace.commands[3].commandLine = "cd /projects/hwn-api && swagger project edit -s -p 10010"
+workspace.commands[3].attributes.previewUrl = "http://${server.port.10010}/editor/spec"
+workspace.commands[3].attributes.goal = "Common"
 
 # A command that will be executed after the workspace is loaded.
 # Reference the name of a command defined above.
